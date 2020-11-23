@@ -29,14 +29,12 @@ import pt.iade.unimanage.models.exceptions.NotFoundException;
 public class StudentController {
     private Logger logger = LoggerFactory.getLogger(StudentController.class);
 
-    // get all students
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Student> getStudents() {
         logger.info("Sending all students");
         return StudentRepository.getStudents();
     }
 
-    // get student
     @GetMapping(path = "{number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Student getStudent(@PathVariable("number") int number) throws NotFoundException {
         logger.info("Sending student with number " + number);
@@ -47,7 +45,6 @@ public class StudentController {
             throw new NotFoundException("" + number, "Student", "number");
     }
 
-    // delete student from repository
     // ADDED THE (RESULT) CAST SO VSCODE STOPS REDLINING, DON'T KNOW IF IT RIGHT
     @DeleteMapping(path = "{number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Result deleteStudent(@PathVariable("number") int number) {
@@ -58,10 +55,8 @@ public class StudentController {
             return (Result) new Response(number + " not found.", null);
     }
 
-    // add a student to repository
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public Student addStudent(@RequestBody Student student) {
-        // ?
         return student;
     }
 

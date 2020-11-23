@@ -3,7 +3,7 @@ package pt.iade.unimanage.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Student {
+public class Student extends Person {
     private static int nextNumber = 0;
     private String name;
     private LocalDate birthDate;
@@ -26,10 +26,7 @@ public class Student {
 
     /*--- Getters & Setters ---*/
     
-    public static int getNextNumber() {
-        return nextNumber;
-    }
-
+    @Override
     public String getName() {
         return name;
     }
@@ -38,6 +35,7 @@ public class Student {
         return birthDate;
     }
 
+    @Override
     public String getEmail() {
         return email;
     }
@@ -70,7 +68,7 @@ public class Student {
         return null;
     }
 
-    public void enroll (Unit unit) {
+    public void enroll(Unit unit) {
         units.add(unit);
         unit.getStudents().add(this);
     }
@@ -83,6 +81,13 @@ public class Student {
     public void grade(int unitId, double grade) {
         for (Enrolment enr : enrolments)
             if (enr.getUnit().getId()==unitId) enr.setGrade(grade);;
+    }
+
+    /*-----*/ 
+    
+    @Override
+    public String getReference() {
+        return "S<" + number + ">";
     }
     
 }

@@ -12,7 +12,7 @@ public class Student extends Person {
     private int number;
     private ArrayList<Unit> units;
     private ArrayList<Enrolment> enrolments;
-
+ 
     public Student(String name, LocalDate birthDate, char gender) {
         this.name = name;
         this.birthDate = birthDate;

@@ -15,7 +15,7 @@ public class Teacher extends Person {
     this.email = email;
     this.units = units;
   }
-
+ 
   public int getMecNumber() {
     return mecNumber;
   }

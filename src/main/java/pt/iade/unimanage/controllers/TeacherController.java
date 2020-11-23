@@ -61,7 +61,7 @@ public class TeacherController {
         logger.info("assigning teacher " + teacher.getMecNumber() + " to unit " + unit.getId());
         teacher.assign(unit);
     }
-
+ 
     // unassigning teacher
     @DeleteMapping(path = "{unitId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void unassignTeacher(@PathVariable("unitId") int unitId) {

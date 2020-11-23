@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pt.iade.unimanage.models.Person;
+import pt.iade.unimanage.models.Person; 
 import pt.iade.unimanage.models.StudentRepository;
 import pt.iade.unimanage.models.TeacherRepository;
 

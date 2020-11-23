@@ -3,7 +3,7 @@ package pt.iade.unimanage.controllers;
 public class Response {
     private String message;
     private Object object;
-
+ 
     public Response(String message, Object object) {
         this.message = message;
         this.object = object;

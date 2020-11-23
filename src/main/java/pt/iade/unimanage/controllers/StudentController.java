@@ -35,7 +35,7 @@ public class StudentController {
         logger.info("Sending all students");
         return StudentRepository.getStudents();
     }
-
+ 
     // get student
     @GetMapping(path = "{number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Student getStudent(@PathVariable("number") int number) throws NotFoundException {

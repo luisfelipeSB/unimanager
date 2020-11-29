@@ -1,6 +1,5 @@
 package pt.iade.unimanage.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.transform.Result;
@@ -22,6 +21,8 @@ import pt.iade.unimanage.models.Enrolment;
 import pt.iade.unimanage.models.Student;
 import pt.iade.unimanage.models.StudentRepository;
 import pt.iade.unimanage.models.Unit;
+import pt.iade.unimanage.models.UnitRepository;
+import pt.iade.unimanage.models.exceptions.AlreadyExistsException;
 import pt.iade.unimanage.models.exceptions.NotFoundException;
 
 @RestController
@@ -92,7 +93,7 @@ public class StudentController {
             throw new NotFoundException("" + number, "Student", "number");
     }
 
-    /*
+    
     @PostMapping(path = "{number}/enrolments", produces = MediaType.APPLICATION_JSON_VALUE)
     public Enrolment addEnrolment(@PathVariable("number") int number, @RequestBody int unitId)
             throws NotFoundException, AlreadyExistsException {
@@ -113,7 +114,6 @@ public class StudentController {
         } else
             throw new NotFoundException("" + number, "Student", "number");
     }
-    */
 
     @PutMapping(path = "{number}/enrolments/{unitId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Enrolment setGrade(@PathVariable("number") int number, @PathVariable("unitId") int unitId,

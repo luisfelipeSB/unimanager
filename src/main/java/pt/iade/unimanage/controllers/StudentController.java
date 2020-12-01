@@ -2,8 +2,6 @@ package pt.iade.unimanage.controllers;
 
 import java.util.List;
 
-import javax.xml.transform.Result;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,25 +47,42 @@ public class StudentController {
     }
 
     // delete student from repository
-    // ADDED THE (RESULT) CAST SO VSCODE STOPS REDLINING, DON'T KNOW IF IT RIGHT
     @DeleteMapping(path = "{number}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Result deleteStudent(@PathVariable("number") int number) {
+    public Response deleteStudent(@PathVariable("number") int number) {
         logger.info("deleting student with number " + number);
         if (StudentRepository.deleteStudent(number))
-            return (Result) new Response(number + " was deleted.", null);
+            return new Response(number + " was deleted.", null);
         else
-            return (Result) new Response(number + " not found.", null);
+            return new Response(number + " not found.", null);
     }
 
     // add a student to repository
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public Student addStudent(@RequestBody Student student) {
-        // ?
+        StudentRepository.addStudent(student);
         return student;
     }
 
-    /*-----*/
+    // set a student's grade
+    @PutMapping(path = "{number}/enrolments/{unitId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Enrolment setGrade(@PathVariable("number") int number, @PathVariable("unitId") int unitId,
+            @RequestBody double grade) throws NotFoundException {
+        logger.info("Setting grade of enrolment with id " + unitId + " of student with number " + number);
+        Student student = StudentRepository.getStudent(number);
+        if (student != null) {
+            Enrolment enr = student.getEnrolmentByUnitId(unitId);
+            if (enr != null) {
+                enr.setGrade(grade);
+                return enr;
+            } else
+                throw new NotFoundException("" + unitId, "Unit", "id");
+        } else
+            throw new NotFoundException("" + number, "Student", "number");
+    }
 
+    /*--- Enrolment methods ---*/
+
+    // get all enrolments of a student
     @GetMapping(path = "{number}/enrolments", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Enrolment> getEnrolments(@PathVariable("number") int number) throws NotFoundException {
         logger.info("Sending enrolments of student with number " + number);
@@ -78,10 +93,11 @@ public class StudentController {
             throw new NotFoundException("" + number, "Student", "number");
     }
 
+    // get a specific enrolment
     @GetMapping(path = "{number}/enrolments/{unitId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Enrolment getEnrolment(@PathVariable("number") int number, @PathVariable("unitId") int unitId)
             throws NotFoundException {
-        logger.info("Sending enrolment with id " + unitId + " of student with number " + number);
+        logger.info("Sending enrolment with unit id " + unitId + " of student with number " + number);
         Student student = StudentRepository.getStudent(number);
         if (student != null) {
             Enrolment enr = student.getEnrolmentByUnitId(unitId);
@@ -93,7 +109,7 @@ public class StudentController {
             throw new NotFoundException("" + number, "Student", "number");
     }
 
-    
+    // add new enrolment
     @PostMapping(path = "{number}/enrolments", produces = MediaType.APPLICATION_JSON_VALUE)
     public Enrolment addEnrolment(@PathVariable("number") int number, @RequestBody int unitId)
             throws NotFoundException, AlreadyExistsException {
@@ -109,22 +125,6 @@ public class StudentController {
                     student.enroll(enrolment);
                     return enrolment;
                 }
-            } else
-                throw new NotFoundException("" + unitId, "Unit", "id");
-        } else
-            throw new NotFoundException("" + number, "Student", "number");
-    }
-
-    @PutMapping(path = "{number}/enrolments/{unitId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Enrolment setGrade(@PathVariable("number") int number, @PathVariable("unitId") int unitId,
-            @RequestBody double grade) throws NotFoundException {
-        logger.info("Setting grade of enrolment with id " + unitId + " of student with number " + number);
-        Student student = StudentRepository.getStudent(number);
-        if (student != null) {
-            Enrolment enr = student.getEnrolmentByUnitId(unitId);
-            if (enr != null) {
-                enr.setGrade(grade);
-                return enr;
             } else
                 throw new NotFoundException("" + unitId, "Unit", "id");
         } else

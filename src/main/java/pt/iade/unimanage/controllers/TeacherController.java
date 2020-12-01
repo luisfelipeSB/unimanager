@@ -2,8 +2,6 @@ package pt.iade.unimanage.controllers;
 
 import java.util.List;
 
-import javax.xml.transform.Result;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,13 +25,14 @@ import pt.iade.unimanage.models.exceptions.NotFoundException;
 public class TeacherController {
     private Logger logger = LoggerFactory.getLogger(TeacherController.class);
 
-
+    // get all teachers
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Teacher> getTeachers() {
         logger.info("Sending all teachers");
         return TeacherRepository.getTeachers();
     }
 
+    // get a specific teacher
     @GetMapping(path = "{mecNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Teacher getTeacher(@PathVariable("mecNumber") int mecNumber) throws NotFoundException {
         logger.info("Sending teacher with number " + mecNumber);
@@ -59,7 +58,7 @@ public class TeacherController {
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public void assignTeacher(@RequestBody Teacher teacher, @RequestBody Unit unit) {
         logger.info("assigning teacher " + teacher.getMecNumber() + " to unit " + unit.getId());
-        teacher.assign(unit);
+        teacher.assignUnit(unit);
     }
  
     // unassigning teacher
